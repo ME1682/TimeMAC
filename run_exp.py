@@ -25,11 +25,11 @@ llm_model = OpenAIChatModel(
 '''
 # If users do not have LLM API, they can use "Without_LLM" type. But this type cannot output the analysis.
 provider = OpenAIProvider(
-    base_url="https://api.deepseek.com",
-    api_key='sk-3c175315fdbd47d1945ee36602ceef2c'
+    base_url="Your LLM Website",
+    api_key='Your API KEY'
 )
 llm_model = OpenAIChatModel(
-    "deepseek-reasoner",
+    "Your LLM's Name",
     provider=provider)
 
 tc = TimeCopilot(
@@ -68,9 +68,9 @@ if __name__ == '__main__':
                           ['total']]
         total_node_number = 24
         hierarchy_0_node_number = 18
-        # 分层的层级总数
+
         hierarchy_level = 3
-        # 预测的步数
+
         cross_validation_h = 90
         cross_number = 1
         future_step = cross_validation_h
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             model_num = len(models)
             model_feature = np.eye(model_num)
             df_train = df_read.rename(columns={hierarchy_name[0]: 'unique_id'})
-            # 除了最下层和最上层都要舍去
+
             for i in range(hierarchy_level - 2):
                 df_train = df_train.drop(hierarchy_name[i + 1], axis=1)
             df_data = ExperimentDataset(df=df_train, freq=None, h=None, seasonality=None)
@@ -142,7 +142,7 @@ if __name__ == '__main__':
             if hierarchy == 0:
                 df_train = df_read.rename(columns={hierarchy_name[0]: 'unique_id'})
                 df_test = df_read2.rename(columns={hierarchy_name[0]: 'unique_id'})
-                # 除了最下层和最上层都要舍去
+
                 for i in range(hierarchy_level-2):
                     df_train = df_train.drop(hierarchy_name[i+1], axis=1)
                     df_test = df_test.drop(hierarchy_name[i+1], axis=1)
@@ -187,7 +187,7 @@ if __name__ == '__main__':
             elif hierarchy == hierarchy_level - 1:
                 df_train = df_read
                 df_test = df_read2
-                # 除了最下层和最上层都要舍去
+
                 for i in range(1, hierarchy_level-1):
                     df_train = df_train.drop(hierarchy_name[i], axis=1)
                     df_test = df_test.drop(hierarchy_name[i], axis=1)
@@ -239,16 +239,16 @@ if __name__ == '__main__':
             else:
                 df_train = df_read.rename(columns={'region': 'unique_id'})
                 df_test = df_read2.rename(columns={'region': 'unique_id'})
-                # 除了最下层和本层都要舍去
+
                 for i in range(1, hierarchy_level-1):
-                    # 判断是否属于本层
+
                     if i != hierarchy:
                         df_train = df_train.drop(hierarchy_name[i], axis=1)
                         df_test = df_test.drop(hierarchy_name[i], axis=1)
                 for cnt in hierarchy_node[hierarchy]:
                     print("Hierarchy middle: " + cnt)
                     df = df_train.loc[df_train['unique_id'] == cnt] # 抽出该层需要的节点的数据
-                    # 对该节点下层节点的数据求和并排序
+
                     df = df.set_index(["ds", hierarchy_name[0]])
                     df = df.groupby(level="ds").sum()
                     df.to_csv(f"{dataset_name}/cnt.csv")
@@ -257,7 +257,7 @@ if __name__ == '__main__':
                     df = df.sort_values(by='ds')
 
                     df2 = df_test.loc[df_test['unique_id'] == cnt] # 抽出该层需要的节点的数据
-                    # 对该节点下层节点的数据求和并排序
+
                     df2 = df2.set_index(["ds", hierarchy_name[0]])
                     df2 = df2.groupby(level="ds").sum()
                     df2.to_csv(f"{dataset_name}/cnt.csv")
@@ -294,31 +294,6 @@ if __name__ == '__main__':
         print(model_choice)
 
         # Train Forecasting time series model for hierarchy
-        # transform numpy to train Multi MLP
-        '''
-        fcst_df_np = np.load(f'fcst_{dataset_name}/fcst_df_np.npy', allow_pickle=True)
-        data_y_df = np.load(f'fcst_{dataset_name}/data_y_df.npy', allow_pickle=True)
-        future_fcst_np = np.load(f'fcst_{dataset_name}/future_fcst_np.npy', allow_pickle=True)
-        fcst_df_np = fcst_df_np.T
-        future_fcst_np = future_fcst_np.T
-        trainer = []
-        predictions = np.array([])
-        for i in range(hierarchy_0_node_number):
-            # define ML model
-            trainer.append(MLPTrainer(input_dim=total_node_number, output_dim=1))
-            y = data_y_df[i].T
-            # prepare data, please make sure input_dim and output_dim both > 1
-            trainer[i].prepare_data(fcst_df_np, np.array([y]).T, test_size=0.2, batch_size=32)
-            # train
-            train_losses, val_losses = trainer[i].train(epochs=2000, learning_rate=0.000002)
-            pre = trainer[i].predict(future_fcst_np).T
-            # Test
-            if predictions.size == 0:
-                predictions = pre
-            else:
-                predictions = np.concatenate([predictions, pre])
-        predictions = predictions.T'''
-
         # transform numpy to train One MLP
         fcst_df_np = np.load(f'fcst_{dataset_name}/fcst_df_np.npy', allow_pickle=True)
         data_y_df = np.load(f'fcst_{dataset_name}/data_y_df.npy', allow_pickle=True)
@@ -350,7 +325,7 @@ if __name__ == '__main__':
         df_test = df_test.drop('number', axis=1)
         hierarchy = 0
         df = df_test.rename(columns={hierarchy_name[0]: 'unique_id'})
-        # 除了最下层和最上层都要舍去
+
         for i in range(hierarchy_level - 2):
             df = df.drop(hierarchy_name[i + 1], axis=1)
         for cnt in hierarchy_node[hierarchy]:
@@ -498,92 +473,12 @@ if __name__ == '__main__':
         print(model_choice)
 
         # Train Forecasting time series model for hierarchy
-        # transform numpy to train Multi MLP
-        """
-        fcst_df_np = np.load(f'fcst_{dataset_name}/fcst_df_np.npy', allow_pickle=True)
-        data_y_df = np.load(f'fcst_{dataset_name}/data_y_df.npy', allow_pickle=True)
-        future_fcst_np = np.load(f'fcst_{dataset_name}/future_fcst_np.npy', allow_pickle=True)
-        fcst_df_np = fcst_df_np.T
-        future_fcst_np = future_fcst_np.T
-        data_y_df = data_y_df.T
-        trainer = []
-        predictions = np.array([])
-        for hierarchy in range(2):
-            for cnt in hierarchy_node[hierarchy]:
-                df_train = Y_train_df.loc[Y_train_df['unique_id'] == cnt]
-                cnt_series = df_train.iloc[:-cross_validation_h, ]
-                if cnt_series is not None:
-                    if cnt_df1.size == 0:
-                        cnt_df1 = np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())
-                    else:
-                        cnt_df1 = np.vstack(
-                            [cnt_df1,
-                             np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())])
-                if hierarchy == 0:
-                    cnt_series = df_train.iloc[:-cross_validation_h, ]
-                    if cnt_series is not None:
-                        if cnt_df2.size == 0:
-                            cnt_df2 = np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())
-                        else:
-                            cnt_df2 = np.vstack(
-                                [cnt_df2,
-                                 np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())])
-        cnt_df1 = cnt_df1.T
-        cnt_df2 = cnt_df2.T
-        fcst_df_np = np.vstack([cnt_df1, fcst_df_np])
-        data_y_df = np.vstack([cnt_df2, data_y_df])
-        data_y_df = data_y_df.T
-        for i in range(hierarchy_0_node_number):
-            # define ML model
-            trainer.append(MLPTrainer(input_dim=total_node_number, output_dim=1, dropout_rate=0.0))
-            y = data_y_df[i]
-            # prepare data, please make sure input_dim and output_dim both > 1
-            trainer[i].prepare_data(fcst_df_np, np.array([y]).T, test_size=0.1, batch_size=32)
-            # train
-            train_losses, val_losses = trainer[i].train(epochs=2000, learning_rate=0.001)
-            pre = trainer[i].predict(future_fcst_np).T
-            # Test
-            if predictions.size == 0:
-                predictions = pre
-            else:
-                predictions = np.concatenate([predictions, pre])
-        predictions = predictions.T
-        """
-        # transform numpy to train One MLP
-
         fcst_df_np = np.load(f'fcst_{dataset_name}/fcst_df_np.npy', allow_pickle=True)
         data_y_df = np.load(f'fcst_{dataset_name}/data_y_df.npy', allow_pickle=True)
         future_fcst_np = np.load(f'fcst_{dataset_name}/future_fcst_np.npy', allow_pickle=True)
         fcst_df_np = fcst_df_np.T
         data_y_df = data_y_df.T
         future_fcst_np = future_fcst_np.T
-        '''
-        # Only enough nodes compared to hierarchy_0 can provide hierarchical information; otherwise, it will be noise.
-        for hierarchy in range(2):
-            for cnt in hierarchy_node[hierarchy]:
-                df_train = Y_train_df.loc[Y_train_df['unique_id'] == cnt]
-                cnt_series = df_train.iloc[:-cross_validation_h, ]
-                if cnt_series is not None:
-                    if cnt_df1.size == 0:
-                        cnt_df1 = np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())
-                    else:
-                        cnt_df1 = np.vstack(
-                            [cnt_df1,
-                             np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())])
-                if hierarchy == 0:
-                    cnt_series = df_train.iloc[:-cross_validation_h, ]
-                    if cnt_series is not None:
-                        if cnt_df2.size == 0:
-                            cnt_df2 = np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())
-                        else:
-                            cnt_df2 = np.vstack(
-                                [cnt_df2,
-                                 np.array(cnt_series.to_numpy()[:, cnt_series.columns.get_loc('y')].tolist())])
-        cnt_df1 = cnt_df1.T
-        cnt_df2 = cnt_df2.T
-        fcst_df_np = np.vstack([cnt_df1, fcst_df_np])
-        data_y_df = np.vstack([cnt_df2, data_y_df])
-        '''
         if len(fcst_df_np) > 15:
             # define ML model
             trainer = MLPTrainer(input_dim=total_node_number, output_dim=hierarchy_0_node_number, dropout_rate=0.0)
