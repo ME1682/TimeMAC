@@ -507,14 +507,9 @@ if __name__ == '__main__':
         future_test_np = future_test_np.T
         np.save(f'fcst_{dataset_name}/predictions.npy', predictions)
         np.save(f'fcst_{dataset_name}/future_test_np.npy', future_test_np)
-
-        # Pre-fcst Evaluation
-        mae1 = mean_absolute_error(future_fcst_np[:, :hierarchy_0_node_number], future_test_np)
-        print(f"Pre-fcst Evaluation MAE: {mae1:.4f}")
         # Final Evaluation
         mae2 = mean_absolute_error(predictions, future_test_np)
-        print(f"Final Evaluation MAE: {mae2:.4f}")
-        mse1 = mean_squared_error(future_fcst_np[:, :hierarchy_0_node_number], future_test_np)
-        print(f"MSE1: {mse1:.4f}")
+        print(f"Final Evaluation MAE: {mae:.4f}")
         mse2 = mean_squared_error(predictions, future_test_np)
-        print(f"MSE2: {mse2:.4f}")
+        print(f"MSE2: {mse:.4f}")
+
