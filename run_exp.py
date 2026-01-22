@@ -13,16 +13,6 @@ from TimeMAC.utils.experiment_handler import ExperimentDataset
 import m5_dataset
 import pickle
 import math
-'''
-# only test
-provider = OpenAIProvider(
-    base_url="https://router.huggingface.co/v1",
-    api_key='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'
-)
-llm_model = OpenAIChatModel(
-    "HuggingFaceTB/SmolLM3-3B:hf-inference",
-    provider=provider)
-'''
 # If users do not have LLM API, they can use "Without_LLM" type. But this type cannot output the analysis.
 provider = OpenAIProvider(
     base_url="Your LLM Website",
@@ -512,4 +502,5 @@ if __name__ == '__main__':
         print(f"Final Evaluation MAE: {mae:.4f}")
         mse2 = mean_squared_error(predictions, future_test_np)
         print(f"MSE: {mse:.4f}")
+
 
