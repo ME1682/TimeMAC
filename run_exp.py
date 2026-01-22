@@ -119,7 +119,7 @@ if __name__ == '__main__':
             performance = performance_predictor.predict(x)
             print(models)
             print(performance)
-            models = tc.choose_model_in_dataset_level(models, performance, ST_num=3, NN_num=3, FM_num=1)
+            models = tc.choose_model_in_dataset_level(models, performance, ST_num=2, NN_num=3, FM_num=1)
             print('For this dataset, we use the following models:')
             print(models)
 
@@ -511,5 +511,5 @@ if __name__ == '__main__':
         mae2 = mean_absolute_error(predictions, future_test_np)
         print(f"Final Evaluation MAE: {mae:.4f}")
         mse2 = mean_squared_error(predictions, future_test_np)
-        print(f"MSE2: {mse:.4f}")
+        print(f"MSE: {mse:.4f}")
 
