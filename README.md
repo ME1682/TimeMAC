@@ -30,4 +30,7 @@ where dataset is one of `{Tourismsmall, Tourismlarge, Traffic, Labour, Wiki, Ama
 
 ## Acknowledge
 Special thanks to the following repositories for their invaluable code and prompt.
+
 Our prompt and code are partially adapted from [TimeCopilot](https://github.com/TimeCopilot/timecopilot). Our model zoo is based on [Nixtla](https://github.com/nixtla).
+
+We will continue to update and improve the code and calls.
