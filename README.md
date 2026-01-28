@@ -4,9 +4,11 @@
 
 ## What is TimeMAC?
 
+We propose TimeMAC, a multi-agent framework enabling collaborative cooperation for hierarchical forecasting. We introduce decomposition on hierarchy structures to obtain fine-grained sub-forecasting tasks. Building on this, we introduce a performance prediction agent to rapidly estimate model efficacy on unseen datasets, alongside a decision-making agent that selects the optimal models via a two-stage process. We also rethink previous forecasting reconciliation methods and propose hierarchical information aggregation. We conduct extensive experiments on mainstream hierarchical forecasting datasets. TimeMAC significantly outperforms existing methods, achieving 15\%–30\% improvement in many cases and surpassing the theoretical upper bound of existing agent performance.
+
 ## Method Overview
 
-![framework](figures/main_TimeMAC.pdf)
+![framework](figures/main_TimeMAC.png)
 
 ## Setup
 
