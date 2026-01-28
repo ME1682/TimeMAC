@@ -8,7 +8,7 @@ We propose TimeMAC, a multi-agent framework enabling collaborative cooperation f
 
 ## Method Overview
 
-
+![framework](figures/main_TimeMAC.png)
 
 ## Setup
 
