@@ -100,7 +100,7 @@ hierarchy_node = [['NewYork', 'Alabama', 'NewJersey', 'Pennsylvania', 'Kentucky'
                   ['total']]
 total_node_number = 24
 hierarchy_0_node_number = 18
-# 分层的层级总数
+
 hierarchy_level = 3
 hierarchy_name = ["state", "region"]
 hierarchy = 1
@@ -113,8 +113,7 @@ df_read["ds"] = pd.to_datetime(df_read["ds"])
 df_read = df_read.rename(columns={'region': 'unique_id'})
 for cnt in hierarchy_node[hierarchy]:
     print("Hierarchy middle: " + cnt)
-    df = df_read.loc[df_read['unique_id'] == cnt] # 抽出该层需要的节点的数据
-    # 对该节点下层节点的数据求和并排序
+    df = df_read.loc[df_read['unique_id'] == cnt]
     df = df.set_index(["ds", hierarchy_name[0]])
     df = df.groupby(level="ds").sum()
     df.to_csv(f'group/region_{cnt}.csv')
