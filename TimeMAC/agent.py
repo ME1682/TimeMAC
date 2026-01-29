@@ -444,6 +444,7 @@ class TimeCopilot:
         The models for selection and their characteristics are briefly outlined as follows:
         - TSRNN: a neural network method, this method is suitable for time series forecasting.
         - TSPathTST: The PatchTST model is an efficient Transformer-based (neural network) model for time series forecasting.
+        - ...
         - TiRex: a foundation model (neural network) for time series forecasting.
         - ADIDA: Useful for time series containing numerous zero values.
         - AutoARIMA: Using the existing auto-correlation relationships within time series, 
@@ -452,19 +453,6 @@ class TimeCopilot:
         - AutoETS: Suitable for time series with trend, seasonal components and noise.
         - DynamicOptimizedTheta: Suitable for scenarios with significant fluctuations and changing data distributions. 
         """
-
-        '''
-        The models for selection and their characteristics are briefly outlined as follows:
-        - ADIDA and IMAPA: Useful for time series containing numerous zero values.
-        - AutoARIMA: Using the existing auto-correlation relationships within time series, 
-                    this method is suitable for time series with trend and seasonal components.
-        - AutoETS: Suitable for time series with trend, seasonal components and noise.
-        - DynamicOptimizedTheta: Suitable for scenarios with significant fluctuations and changing data distributions.
-        - HistoricAverage: Suitable for sequences without significant trends or seasonality.
-        - SeasonalNaive: A very simple and unadorned statistical model.
-        - CrostonClassic: suitable for time series with low demand levels and irregular patterns.
-        '''
-
 
         if "model" in kwargs:
             raise ValueError(
@@ -536,7 +524,6 @@ class TimeCopilot:
                 [
                     _transform_features_to_text(self.features_df),
                     _transform_eval_to_text(self.eval_df, self.eval_forecasters),
-                    #还差一个问题自身的prompt没写，以及一些feature没加
                 ]
             )
             return output'''
