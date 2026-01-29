@@ -118,7 +118,6 @@ if __name__ == '__main__':
             if model not in ['ADIDA', 'AutoARIMA', 'AutoETS', 'DynamicOptimizedTheta', 'SeasonalNaive',
                              'CrostonClassic', 'HistoricAverage', 'Chronos', 'Sundial', 'TiRex']:
                 df_train = df_read.rename(columns={hierarchy_name[0]: 'unique_id'})
-                # 除了最下层和最上层都要舍去
                 for i in range(hierarchy_level-2):
                     df_train = df_train.drop(hierarchy_name[i+1], axis=1)
                 cnt = tc.train_model(df=df_train,
@@ -237,7 +236,7 @@ if __name__ == '__main__':
                         df_test = df_test.drop(hierarchy_name[i], axis=1)
                 for cnt in hierarchy_node[hierarchy]:
                     print("Hierarchy middle: " + cnt)
-                    df = df_train.loc[df_train['unique_id'] == cnt] # 抽出该层需要的节点的数据
+                    df = df_train.loc[df_train['unique_id'] == cnt]
 
                     df = df.set_index(["ds", hierarchy_name[0]])
                     df = df.groupby(level="ds").sum()
@@ -246,7 +245,7 @@ if __name__ == '__main__':
                     df["ds"] = pd.to_datetime(df["ds"])
                     df = df.sort_values(by='ds')
 
-                    df2 = df_test.loc[df_test['unique_id'] == cnt] # 抽出该层需要的节点的数据
+                    df2 = df_test.loc[df_test['unique_id'] == cnt]
 
                     df2 = df2.set_index(["ds", hierarchy_name[0]])
                     df2 = df2.groupby(level="ds").sum()
@@ -502,5 +501,6 @@ if __name__ == '__main__':
         print(f"Final Evaluation MAE: {mae:.4f}")
         mse2 = mean_squared_error(predictions, future_test_np)
         print(f"MSE: {mse:.4f}")
+
 
 
